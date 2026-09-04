@@ -1,0 +1,23 @@
+name: Gerar ZIP do projeto
+
+on:
+  push:
+    branches:
+      - '**'
+
+jobs:
+  build-zip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Compactar projeto
+        run: zip -r projeto.zip . -x '.git/*' -x '.github/*'
+
+      - name: Publicar artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: projeto-${{ github.sha }}
+          path: projeto.zip
+          retention-days: 30
